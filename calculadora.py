@@ -10,16 +10,17 @@ root.resizable(False, False)
 root.geometry("180x300")
 
 
-#criando função para adicionar algarismos
-def addNumber(label: Label, alg):
+#criando função para adicionar caracteres
+def addNumber(label: Label, char):
     global atual_number
 
-    if alg != "." or "." not in atual_number:
-        atual_number += alg
+    if char != "." or "." not in atual_number:
+        atual_number += char
         label.config(text=atual_number)
         label.grid(row=0, column=0)
 
-#criando a borracha
+
+#criando a "borracha"
 def backspace(label: Label):
     global atual_number
     atual_number = atual_number[:-1]
@@ -40,8 +41,8 @@ def button(text, vector, command=lambda: 0, bg="blue"):
 
 
 #renderizando o "visor" da calculadora
-operator = ""
 equation = ""
+operator = ""
 label1 = Label(root, text=equation)
 label1.grid(row=0, column=0)
 
