@@ -77,7 +77,9 @@ button("+", [5,3])
 button("√", [6,0])
 button(0, [6,1], lambda: addNumber(label2, "0"))
 button(".", [6,2], lambda: addNumber(label2, "."))
-button("=", [6,3])
+button("x^y", [6,3])
+
+button("=", [7,0])
 
 
 #iniciando looping
