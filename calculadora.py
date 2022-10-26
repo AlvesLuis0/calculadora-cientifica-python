@@ -7,79 +7,112 @@ import math
 root = Tk()
 root.title("Calculadora Científica")
 root.resizable(False, False)
-root.geometry("180x300")
+root.geometry("200x350")
 
 
-#criando função para adicionar caracteres
-def addNumber(label: Label, char):
-    global atual_number
-
-    if char != "." or "." not in atual_number:
-        atual_number += char
-        label.config(text=atual_number)
-        label.grid(row=0, column=0)
+#iniciando variáveis importantes
+n1 = ""
+operator = ""
+n2 = ""
 
 
-#criando a "borracha"
-def backspace(label: Label):
-    global atual_number
-    atual_number = atual_number[:-1]
-    label.config(text=atual_number)
-
-
-#criando função para criar botões mais facilmente
-def button(text, vector, command=lambda: 0, bg="blue"):
+#função de criar botões mais facilmente
+def button(text, position, command=lambda: 0, sizex=20):
     Button(
         root,
         text=text,
-        bg=bg,
-        fg="white",
-        width=5,
-        height=2,
+        bg="lightblue",
+        padx=sizex,
+        pady=14,
         command=command
-    ).grid(row=vector[0], column=vector[1])
+    ).place(x=position[1], y=position[0])
 
 
-#renderizando o "visor" da calculadora
-equation = ""
-operator = ""
-label1 = Label(root, text=equation)
-label1.grid(row=0, column=0)
+#criando função de selecionar caractere
+def char_selected(char):
+    global n2
 
-atual_number = ""
-label2 = Label(root, text=atual_number)
-label2.grid(row=1, column=0)
+    if (char != ".") or ("." not in n2):
+        n2 += str(char)
+        label2.config(text=n2)
 
 
-#renderizando o "botões" da calculadora
-button("BACKSPACE", [1,1], lambda: backspace(label2))
+#criando função de selecionar operador
+def operator_selected(oper):
+    global operator, n1, n2
 
-button("sen", [2,0])
-button("cos", [2,1])
-button("tan", [2,2])
-button("/", [2,3])
+    operator = oper
+    n1 = float(n2)
+    n2 = ""
+    
+    if oper in ["sen", "cos", "tan", "√"]:
+        return label1.config(text=f"{oper}{n1}")
+    
+    label1.config(text=f"{n1} {oper}")
+    label2.config(text="")
 
-button(7, [3,0], lambda: addNumber(label2, "7"))
-button(8, [3,1], lambda: addNumber(label2, "8"))
-button(9, [3,2], lambda: addNumber(label2, "9"))
-button("*", [3,3])
 
-button(4, [4,0], lambda: addNumber(label2, "4"))
-button(5, [4,1], lambda: addNumber(label2, "5"))
-button(6, [4,2], lambda: addNumber(label2, "6"))
-button("-", [4,3])
+#criando função que calcula
+def calc():
+    global n1, n2
 
-button(1, [5,0], lambda: addNumber(label2, "1"))
-button(2, [5,1], lambda: addNumber(label2, "2"))
-button(3, [5,2], lambda: addNumber(label2, "3"))
-button("+", [5,3])
+    n1 = float(n1)
+    n2 = float(n2)
 
-button("√", [6,0])
-button(0, [6,1], lambda: addNumber(label2, "0"))
-button(".", [6,2], lambda: addNumber(label2, "."))
-button("x^y", [6,3])
+    functions = {
+        "sen": lambda: math.sin(n1),
+        "cos": lambda: math.cos(n2),
+        "tan": lambda: math.tan(n2),
+        "+": lambda: n1 + n2,
+        "-": lambda: n1 - n2,
+        "*": lambda: n1 * n2,
+        "/": lambda: n1 / n2,
+        "√": lambda: n1 ** 0.5,
+        "xʸ": lambda: n1 ** n2
+    }
 
-button("=", [7,0])
+
+#renderizando "visor"
+label1 = Label(
+    root,
+    text="",
+)
+label1.pack()
+
+label2 = Label(
+    root,
+    text="",
+)
+label2.pack()
+
+
+#renderizando botões
+button("sen", [50,0], sizex=14)
+button("cos", [50,50], sizex=14)
+button("tan", [50,100], sizex=14)
+button("/", [50,150], lambda: operator_selected("/"))
+
+button(7, [100,0], lambda: char_selected(7))
+button(8, [100,50], lambda: char_selected(8))
+button(9, [100,100], lambda: char_selected(9))
+button("*", [100,150], lambda: operator_selected("*"))
+
+button(4, [150,0], lambda: char_selected(4))
+button(5, [150,50], lambda: char_selected(5))
+button(6, [150,100], lambda: char_selected(6))
+button("-", [150,150], lambda: operator_selected("-"))
+
+button(1, [200,0], lambda: char_selected(1))
+button(2, [200,50], lambda: char_selected(2))
+button(3, [200,100], lambda: char_selected(3))
+button("+", [200,150], lambda: operator_selected("+"))
+
+button("√", [250,0])
+button(0, [250,50], lambda: char_selected(0))
+button(".", [250,100], lambda: char_selected("."))
+button("xʸ", [250,150], lambda: operator_selected("xʸ"), sizex=18)
+
+button("=", [300,0], sizex=95)
 
 
 #iniciando looping
