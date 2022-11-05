@@ -1,3 +1,5 @@
+# Participantes da equipe:
+# Luis Eduardo Alves de Sousa - 202203004409
 #importando o "tkinter", que é o responsável pela interface gráfica, e "math" pelos cálculos
 from tkinter import *
 import math
